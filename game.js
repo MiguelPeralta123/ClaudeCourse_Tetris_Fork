@@ -169,7 +169,7 @@ function drawBlock(context, x, y, colorIndex, size, alpha) {
 }
 
 function drawGrid() {
-  ctx.strokeStyle = '#22222e';
+  ctx.strokeStyle = getComputedStyle(document.documentElement).getPropertyValue('--grid-color');
   ctx.lineWidth = 0.5;
   for (let c = 1; c < COLS; c++) {
     ctx.beginPath();
@@ -257,6 +257,11 @@ function loop(ts) {
 }
 
 function init() {
+  const themeToggle = document.getElementById('theme-toggle');
+  themeToggle.addEventListener('change', (e) => {
+    document.documentElement.setAttribute('data-theme', e.target.checked ? 'dark' : 'light');
+  });
+
   board = createBoard();
   score = 0;
   lines = 0;

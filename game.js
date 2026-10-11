@@ -136,6 +136,7 @@ function softDrop() {
 }
 
 function lockPiece() {
+  if (gameOver) return;
   merge();
   clearLines();
   spawn();

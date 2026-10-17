@@ -62,10 +62,29 @@
       </aside>
     </div>
 
+    <!-- Tabla de records local (localStorage) -->
+    <section class="records" aria-label="Records">
+      <div class="records-header">
+        <span class="label">RECORDS</span>
+        <button id="reset-records-btn" type="button">Resetear</button>
+      </div>
+      <ol id="records-list" class="records-list"></ol>
+      <p id="records-stats" class="records-stats"></p>
+    </section>
+
     <div id="overlay" class="overlay hidden">
       <div class="overlay-box">
         <p id="overlay-title">GAME OVER</p>
         <p id="overlay-score"></p>
+        <div id="overlay-extra" class="hidden">
+          <form id="name-form" class="name-form">
+            <input type="text" id="player-name" maxlength="12" placeholder="Tu nombre" autocomplete="off" />
+            <button type="submit" id="save-btn">Guardar</button>
+          </form>
+          <p id="overlay-status"></p>
+          <ol id="overlay-records" class="records-list"></ol>
+          <p id="overlay-stats" class="records-stats"></p>
+        </div>
         <button id="restart-btn">Reiniciar</button>
       </div>
     </div>

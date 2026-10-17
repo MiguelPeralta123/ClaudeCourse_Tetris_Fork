@@ -228,11 +228,16 @@ kbd {
   align-items: center;
 }
 
-#overlay-title {
+#overlay-title,
+#pause-title {
   font-size: 28px;
   font-weight: 800;
   letter-spacing: 4px;
   color: #e57373;
+}
+
+#restart-btn {
+  margin-top: 8px;
 }
 
 #overlay-score {
@@ -241,8 +246,7 @@ kbd {
   color: var(--panel-value);
 }
 
-#restart-btn {
-  margin-top: 8px;
+.menu-btn {
   background: var(--header-color);
   color: var(--bg-color);
   border: none;
@@ -255,6 +259,46 @@ kbd {
   transition: opacity 0.15s;
 }
 
-#restart-btn:hover {
+.menu-btn:hover {
   opacity: 0.8;
+}
+
+/* ---- Menu de pausa ---- */
+#pause-controls {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  font-size: 12px;
+  color: var(--text-color);
+  opacity: 0.8;
+}
+
+#pause-controls li {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+}
+
+#pause-controls.hidden {
+  display: none;
+}
+
+.start-level {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-top: 4px;
+}
+
+#start-level {
+  background: var(--kbd-bg);
+  color: var(--text-color);
+  border: 1px solid var(--kbd-border);
+  border-radius: 4px;
+  padding: 4px 8px;
+  font-size: 14px;
+  font-family: inherit;
+  cursor: pointer;
 }

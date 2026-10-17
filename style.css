@@ -29,6 +29,12 @@
   --grid-color: #eee;
 }
 
+/* Skin overrides (set on <html> by game.js); placed after theme so they win */
+[data-skin="neon"] {
+  --board-bg: #000000;
+  --grid-color: #1c1c3a;
+}
+
 *, *::before, *::after {
   box-sizing: border-box;
   margin: 0;
@@ -92,6 +98,17 @@ header h1 {
   opacity: 0;
   width: 0;
   height: 0;
+}
+
+#skin-select {
+  background: var(--kbd-bg);
+  color: var(--text-color);
+  border: 1px solid var(--kbd-border);
+  border-radius: 4px;
+  padding: 2px 6px;
+  font-size: 12px;
+  font-family: inherit;
+  cursor: pointer;
 }
 
 .slider {

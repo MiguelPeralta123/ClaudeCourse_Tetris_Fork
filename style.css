@@ -29,6 +29,10 @@
   --grid-color: #eee;
 }
 
+[data-skin="neon"] {
+  --grid-color: #1a1a2e;
+}
+
 *, *::before, *::after {
   box-sizing: border-box;
   margin: 0;
@@ -124,6 +128,22 @@ input:checked + .slider {
 
 input:checked + .slider:before {
   transform: translateX(20px);
+}
+
+#skin-select {
+  background: var(--kbd-bg);
+  color: var(--text-color);
+  border: 1px solid var(--kbd-border);
+  border-radius: 4px;
+  padding: 2px 6px;
+  font-size: 12px;
+  font-family: inherit;
+  cursor: pointer;
+}
+
+[data-skin="neon"] #board,
+[data-skin="neon"] #next-canvas {
+  background: #000;
 }
 
 .game-container {

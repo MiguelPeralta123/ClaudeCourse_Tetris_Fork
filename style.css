@@ -378,3 +378,59 @@ kbd {
 .hidden {
   display: none;
 }
+
+/* ---- Skin selector ---- */
+#skin-select {
+  background: var(--kbd-bg);
+  color: var(--text-color);
+  border: 1px solid var(--kbd-border);
+  border-radius: 4px;
+  padding: 2px 6px;
+  font-size: 12px;
+  font-family: inherit;
+  cursor: pointer;
+}
+
+/* ---- Skin: Neon (accents only; theme still controls bg/text) ---- */
+[data-skin="neon"] {
+  --header-color: #ff00ff;
+  --board-border: #ff00ff;
+  --panel-label: #6a4c93;
+  --panel-value: #00f0ff;
+  --kbd-border: #00f0ff;
+  --kbd-text: #00f0ff;
+}
+
+[data-skin="neon"]:not([data-theme="light"]) #board {
+  background: #000000;
+  box-shadow: 0 0 24px rgba(255, 0, 255, 0.5);
+}
+
+[data-skin="neon"] header h1 {
+  text-shadow: 0 0 12px #ff00ff, 0 0 24px #ff00ff;
+}
+
+/* ---- Skin: Pastel (accents only; theme still controls bg/text) ---- */
+[data-skin="pastel"] {
+  --header-color: #c39bd3;
+  --board-border: #e8d5f0;
+  --panel-label: #b39ddb;
+  --panel-value: #8e7cc3;
+  --kbd-border: #e0cfe9;
+  --kbd-text: #8e7cc3;
+}
+
+[data-skin="pastel"] #board,
+[data-skin="pastel"] #next-canvas {
+  border-radius: 16px;
+}
+
+[data-skin="pastel"] header h1 {
+  text-shadow: none;
+}
+
+/* ---- Skin: Pixel art (monospace title) ---- */
+[data-skin="pixel"] header h1 {
+  font-family: 'Courier New', Courier, monospace;
+  letter-spacing: 4px;
+}

@@ -4,7 +4,7 @@ const COLS = 10;
 const ROWS = 20;
 const BLOCK = 30;
 
-const COLORS = [
+const RETRO_COLORS = [
   null,
   '#4dd0e1', // I - cyan
   '#ffd54f', // O - yellow
@@ -15,6 +15,91 @@ const COLORS = [
   '#0000ff', // L - blue
   '#C0C0C0', // Nut - silver
 ];
+
+const NEON_COLORS = [
+  null,
+  '#00f0ff', '#fff200', '#ff00ff', '#39ff14',
+  '#ff3131', '#3d5afe', '#ff9100', '#e0e0ff',
+];
+
+const PASTEL_COLORS = [
+  null,
+  '#a8e6ef', '#fff3b0', '#d7bde2', '#c8f7c5',
+  '#ffb3ba', '#b5c7f0', '#ffd6a5', '#d9d9e8',
+];
+
+const pixelTextures = {};
+
+function roundedPath(c, x, y, w, h, r) {
+  c.beginPath();
+  c.moveTo(x + r, y);
+  c.arcTo(x + w, y, x + w, y + h, r);
+  c.arcTo(x + w, y + h, x, y + h, r);
+  c.arcTo(x, y + h, x, y, r);
+  c.arcTo(x, y, x + w, y, r);
+  c.closePath();
+}
+
+function pixelTexture(color) {
+  if (pixelTextures[color]) return pixelTextures[color];
+  const t = document.createElement('canvas');
+  t.width = t.height = BLOCK;
+  const g = t.getContext('2d');
+  g.fillStyle = color;
+  g.fillRect(0, 0, BLOCK, BLOCK);
+  for (let py = 0; py < BLOCK; py += 5)
+    for (let px = 0; px < BLOCK; px += 5) {
+      g.fillStyle = ((px + py) / 5) % 2 ? 'rgba(255,255,255,0.25)' : 'rgba(0,0,0,0.12)';
+      g.fillRect(px, py, 5, 5);
+    }
+  g.fillStyle = 'rgba(0,0,0,0.35)';
+  g.fillRect(0, BLOCK - 2, BLOCK, 2);
+  g.fillRect(BLOCK - 2, 0, 2, BLOCK);
+  pixelTextures[color] = t;
+  return t;
+}
+
+function cellRetro(c, px, py, s, color) {
+  c.fillStyle = color;
+  c.fillRect(px + 1, py + 1, s - 2, s - 2);
+  // highlight
+  c.fillStyle = 'rgba(255,255,255,0.12)';
+  c.fillRect(px + 1, py + 1, s - 2, 4);
+}
+
+function cellNeon(c, px, py, s, color) {
+  c.save();
+  c.shadowColor = color;
+  c.shadowBlur = s / 2;
+  c.fillStyle = color;
+  c.fillRect(px + 3, py + 3, s - 6, s - 6);
+  c.restore();
+  // hot core
+  c.fillStyle = 'rgba(255,255,255,0.45)';
+  c.fillRect(px + 8, py + 8, s - 16, s - 16);
+}
+
+function cellPastel(c, px, py, s, color) {
+  roundedPath(c, px + 1, py + 1, s - 2, s - 2, 8);
+  c.fillStyle = 'rgba(120,90,140,0.18)';
+  c.fill();
+  roundedPath(c, px + 3, py + 3, s - 6, s - 6, 6);
+  c.fillStyle = color;
+  c.fill();
+}
+
+function cellPixel(c, px, py, s, color) {
+  c.drawImage(pixelTexture(color), px + 1, py + 1, s - 2, s - 2);
+}
+
+const SKINS = {
+  retro: { colors: RETRO_COLORS, cell: cellRetro },
+  neon: { colors: NEON_COLORS, cell: cellNeon },
+  pastel: { colors: PASTEL_COLORS, cell: cellPastel },
+  pixel: { colors: RETRO_COLORS, cell: cellPixel },
+};
+
+const SKIN_KEY = 'tetris-skin';
 
 const PIECES = [
   null,
@@ -41,8 +126,10 @@ const overlay = document.getElementById('overlay');
 const overlayTitle = document.getElementById('overlay-title');
 const overlayScore = document.getElementById('overlay-score');
 const restartBtn = document.getElementById('restart-btn');
+const skinSelect = document.getElementById('skin-select');
 
 let board, current, next, score, lines, level, paused, gameOver, lastTime, dropAccum, dropInterval, animId;
+let skin = 'retro';
 
 function createBoard() {
   return Array.from({ length: ROWS }, () => new Array(COLS).fill(0));
@@ -161,14 +248,32 @@ function updateHUD() {
 
 function drawBlock(context, x, y, colorIndex, size, alpha) {
   if (!colorIndex) return;
-  const color = COLORS[colorIndex];
+  const { colors, cell } = SKINS[skin];
   context.globalAlpha = alpha ?? 1;
-  context.fillStyle = color;
-  context.fillRect(x * size + 1, y * size + 1, size - 2, size - 2);
-  // highlight
-  context.fillStyle = 'rgba(255,255,255,0.12)';
-  context.fillRect(x * size + 1, y * size + 1, size - 2, 4);
+  cell(context, x * size, y * size, size, colors[colorIndex]);
   context.globalAlpha = 1;
+}
+
+function applySkin(name) {
+  skin = SKINS[name] ? name : 'retro';
+  document.documentElement.setAttribute('data-skin', skin);
+  skinSelect.value = skin;
+}
+
+function loadSkin() {
+  try {
+    return localStorage.getItem(SKIN_KEY) || 'retro';
+  } catch (err) {
+    return 'retro';
+  }
+}
+
+function saveSkin() {
+  try {
+    localStorage.setItem(SKIN_KEY, skin);
+  } catch (err) {
+    // storage unavailable: keep skin for this session only
+  }
 }
 
 function drawGrid() {
@@ -265,6 +370,8 @@ function init() {
     document.documentElement.setAttribute('data-theme', e.target.checked ? 'dark' : 'light');
   });
 
+  applySkin(loadSkin());
+
   board = createBoard();
   score = 0;
   lines = 0;
@@ -308,5 +415,12 @@ document.addEventListener('keydown', e => {
 });
 
 restartBtn.addEventListener('click', init);
+
+skinSelect.addEventListener('change', (e) => {
+  applySkin(e.target.value);
+  saveSkin();
+  draw();
+  drawNext();
+});
 
 init();

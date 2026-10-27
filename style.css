@@ -303,3 +303,102 @@ kbd {
   font-size: 14px;
   color: var(--text-color);
 }
+
+[hidden] {
+  display: none !important;
+}
+
+/* ---- Records ---- */
+.records {
+  width: 260px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+}
+
+#records-list {
+  width: 100%;
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  font-family: 'Courier New', Courier, monospace;
+  font-size: 13px;
+}
+
+#records-list li {
+  display: grid;
+  grid-template-columns: 24px 1fr auto auto auto;
+  gap: 8px;
+  padding: 3px 6px;
+  border-radius: 4px;
+}
+
+#records-list li span:nth-child(n+3) {
+  text-align: right;
+}
+
+#records-list li.is-new {
+  background: var(--panel-value);
+  color: var(--bg-color);
+}
+
+.records-note {
+  font-size: 11px;
+  letter-spacing: 1px;
+  color: var(--panel-label);
+}
+
+#reset-btn {
+  background: none;
+  border: 1px solid var(--kbd-border);
+  color: var(--kbd-text);
+  border-radius: 6px;
+  padding: 6px 12px;
+  font-size: 12px;
+  cursor: pointer;
+}
+
+/* ---- Nuevo record ---- */
+.name-form {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+}
+
+#new-record-msg {
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 2px;
+  color: var(--panel-value);
+}
+
+.name-row {
+  display: flex;
+  gap: 8px;
+}
+
+#player-name {
+  width: 150px;
+  padding: 8px 10px;
+  background: var(--board-bg);
+  color: var(--text-color);
+  border: 1px solid var(--board-border);
+  border-radius: 6px;
+  font-family: 'Courier New', Courier, monospace;
+  font-size: 14px;
+  text-transform: uppercase;
+}
+
+#save-btn {
+  background: var(--header-color);
+  color: var(--bg-color);
+  border: none;
+  border-radius: 6px;
+  padding: 8px 14px;
+  font-size: 13px;
+  font-weight: 700;
+  cursor: pointer;
+}
